@@ -1,6 +1,5 @@
 load(":target_variants.bzl", "la_variants")
 load(":msm_kernel_la.bzl", "define_msm_la")
-load(":msm_kernel_16k_la.bzl", "define_msm_16k_la")
 load(":image_opts.bzl", "boot_image_opts")
 
 load("//oplus/bazel:oplus_modules_define.bzl", _get_oplus_features = "oplus_ddk_get_oplus_features")
@@ -436,13 +435,3 @@ def define_sun():
             ),
         )
 
-        define_msm_16k_la(
-            msm_target = target_name,
-            variant = variant,
-            in_tree_module_list = mod_list,
-            boot_image_opts = boot_image_opts(
-                kernel_vendor_cmdline_extras = kernel_vendor_cmdline_extras,
-                board_kernel_cmdline_extras = board_kernel_cmdline_extras,
-                board_bootconfig_extras = board_bootconfig_extras,
-            ),
-        )
