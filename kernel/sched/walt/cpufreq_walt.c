@@ -368,7 +368,6 @@ void post_update_cleanups(struct waltgov_policy *wg_policy)
 		wg_cpu->rtg_boost_flag = false;
 		wg_cpu->hispeed_flag = false;
 		wg_cpu->conservative_pl_flag = false;
-		wg_cpu->reasons = 0;
 	}
 
 	wg_policy->rtg_boost_flag = false;
@@ -799,7 +798,7 @@ static void waltgov_update_freq(struct waltgov_callback *cb, u64 time,
 	wg_cpu->flags = flags;
 	wg_policy->flags = flags;
 #else
-	wg_cpu->util = cpu_util_freq_walt(wg_cpu->cpu, &wg_cpu->walt_load, &wg_cpu->reasons);
+	wg_cpu->util = waltgov_get_util(wg_cpu);
 	wg_cpu->flags = flags;
 	raw_spin_lock(&wg_policy->update_lock);
 #endif
