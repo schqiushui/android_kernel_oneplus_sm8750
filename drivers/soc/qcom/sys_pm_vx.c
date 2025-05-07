@@ -156,6 +156,15 @@ static const char * const drv_names_kera[][MAX_DRV_NAMES] = {
 			"TME", "MODEM", "WLAN RF", "WLAN BB", "CAM", "PCIE", "MM", ""},
 };
 
+static const char * const drv_names_sdxkova[][MAX_DRV_NAMES] = {
+	[CXPC_DRV_NAME] = {"TZ", "L3", "HLOS", "HYP", "AOP", "DEBUG", "TME_HW", "TME_SW",
+			"MDM SW", "MDM HW", "MDM_CESTA", "PCIe_CESTA0", "PCIe_CESTA1",
+			"PCIe_CESTA2", "WLAN RF", "WLAN BB", "DDR AUX", "ARC CPRF",
+			""},
+	[AOSS_DRV_NAME] = {"APPS", "AOP", "DEBUG", "TME", "MODEM", "PCIE", "WLAN RF",
+			"WLAN BB", ""},
+};
+
 static ssize_t debug_time_ms_show(struct device *dev,
 			struct device_attribute *attr, char *buf)
 {
@@ -564,6 +573,8 @@ static const struct of_device_id drv_match_table[] = {
 	  .data = drv_names_tuna },
 	{ .compatible = "qcom,sys-pm-kera",
 	  .data = drv_names_kera },
+	{ .compatible = "qcom,sys-pm-sdxkova",
+	  .data = drv_names_sdxkova },
 	{ }
 };
 

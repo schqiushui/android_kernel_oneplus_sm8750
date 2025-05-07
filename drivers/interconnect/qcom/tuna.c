@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2024-2025, Qualcomm Innovation Center, Inc. All rights reserved.
  *
  */
 
@@ -2830,7 +2830,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_sw_0 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_SW_0,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_sw_0 },
 };
@@ -2872,7 +2872,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_0 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_0,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_0 },
 };
@@ -2914,7 +2914,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_1 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_1,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_1 },
 };
@@ -2956,7 +2956,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_2 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_2,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_2 },
 };
@@ -2998,7 +2998,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_3 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_3,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_3 },
 };
@@ -3040,7 +3040,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_4 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_4,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_4 },
 };
@@ -3082,7 +3082,7 @@ static struct qcom_icc_bcm bcm_acv_disp_crm_hw_5 = {
 	.name = "ACV",
 	.type = QCOM_ICC_BCM_TYPE_MASK,
 	.voter_idx = VOTER_IDX_DISP_CRM_HW_5,
-	.crm_node = 5,
+	.crm_node = 4,
 	.num_nodes = 1,
 	.nodes = { &ebi_disp_crm_hw_5 },
 };

@@ -14,9 +14,11 @@ la_variants = [
 
 le_targets = [
     # keep sorted
+    "qcs610",
     "sdxkova",
     "sdxkova.cpe.wkk",
     "sun-allyes",
+    "sun-le",
 ]
 
 le_variants = [

@@ -1,6 +1,6 @@
-load(":target_variants.bzl", "la_variants")
-load(":msm_kernel_la.bzl", "define_msm_la")
 load(":image_opts.bzl", "boot_image_opts")
+load(":msm_kernel_la.bzl", "define_msm_la")
+load(":target_variants.bzl", "la_variants")
 
 target_name = "monaco"
 
@@ -54,7 +54,6 @@ def define_monaco():
         "drivers/iommu/arm/arm-smmu/arm_smmu.ko",
         "drivers/iommu/iommu-logger.ko",
         "drivers/iommu/msm_dma_iommu_mapping.ko",
-        "drivers/iommu/qcom_iommu_debug.ko",
         "drivers/iommu/qcom_iommu_util.ko",
         "drivers/irqchip/msm_show_resume_irq.ko",
         "drivers/irqchip/qcom-mpm.ko",
@@ -104,6 +103,8 @@ def define_monaco():
         "drivers/slimbus/slimbus.ko",
         "drivers/soc/qcom/boot_stats.ko",
         "drivers/soc/qcom/cpu_phys_log_map.ko",
+        "drivers/soc/qcom/crypto-qti-common.ko",
+        "drivers/soc/qcom/crypto-qti-hwkm.ko",
         "drivers/soc/qcom/dcc_v2.ko",
         "drivers/soc/qcom/dcvs/bwmon.ko",
         "drivers/soc/qcom/dcvs/memlat.ko",
@@ -111,6 +112,7 @@ def define_monaco():
         "drivers/soc/qcom/dcvs/qcom-pmu-lib.ko",
         "drivers/soc/qcom/debug_symbol.ko",
         "drivers/soc/qcom/eud.ko",
+        "drivers/soc/qcom/hwkm_v1.ko",
         "drivers/soc/qcom/mdt_loader.ko",
         "drivers/soc/qcom/mem_buf/mem_buf.ko",
         "drivers/soc/qcom/mem_buf/mem_buf_dev.ko",
@@ -187,6 +189,7 @@ def define_monaco():
     _monaco_consolidate_in_tree_modules = _monaco_in_tree_modules + [
         # keep sorted
         "drivers/hwtracing/coresight/coresight-etm4x.ko",
+        "drivers/iommu/qcom_iommu_debug.ko",
         "drivers/misc/lkdtm/lkdtm.ko",
         "kernel/locking/locktorture.ko",
         "kernel/rcu/rcutorture.ko",

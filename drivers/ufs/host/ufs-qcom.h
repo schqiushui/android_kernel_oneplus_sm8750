@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0-only */
 /* Copyright (c) 2013-2021, The Linux Foundation. All rights reserved.
- * Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #ifndef UFS_QCOM_H_
@@ -622,7 +622,8 @@ struct ufs_qcom_host {
 	bool ber_th_exceeded;
 	bool irq_affinity_support;
 	bool esi_enabled;
-	bool storage_boost_en;
+	bool enforce_high_irq_cpus;
+	bool cap_hs_gear_limit;
 
 	bool bypass_pbl_rst_wa;
 	atomic_t cqhp_update_pending;

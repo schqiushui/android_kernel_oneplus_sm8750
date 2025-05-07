@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2020-2021, The Linux Foundation. All rights reserved.
- * Copyright (c) 2022-2024, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2022-2025, Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #include <linux/seq_file.h>
@@ -1227,7 +1227,7 @@ static void binder_set_priority_hook(void *data,
 		 * some other task tries to use same binder thread.
 		 *
 		 * The only gets cleared when binder transaction is initiated
-		 * and the above condition to set flasg is nto satisfied.
+		 * and the above condition to set flags is not satisfied.
 		 */
 		wts->low_latency &= ~WALT_LOW_LATENCY_BINDER_BIT;
 }
@@ -1605,8 +1605,10 @@ static void walt_cfs_replace_next_task_fair(void *unused, struct rq *rq, struct 
 	*repick = true;
 
 	/* Mark arrival of MVP task */
-	if (!wrq->mvp_arrival_time)
+	if (!wrq->mvp_arrival_time) {
+		update_rq_clock(rq);
 		wrq->mvp_arrival_time = rq->clock;
+	}
 
 	if (simple) {
 		for_each_sched_entity((*se)) {

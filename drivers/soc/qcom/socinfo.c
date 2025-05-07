@@ -2,7 +2,7 @@
 /*
  * Copyright (c) 2009-2017, 2021 The Linux Foundation. All rights reserved.
  * Copyright (c) 2017-2019, Linaro Ltd.
- * Copyright (c) 2022-2024, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2022-2025, Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #include <linux/debugfs.h>
@@ -59,6 +59,7 @@ enum {
 	HW_PLATFORM_SBC = 24,
 	HW_PLATFORM_ADP = 25,
 	HW_PLATFORM_HDK = 31,
+	HW_PLATFORM_IOT = 32,
 	HW_PLATFORM_ATP = 33,
 	HW_PLATFORM_IDP = 34,
 	HW_PLATFORM_CRD = 40,
@@ -85,6 +86,7 @@ static const char * const hw_platform[] = {
 	[HW_PLATFORM_SBC] = "SBC",
 	[HW_PLATFORM_ADP] = "ADP",
 	[HW_PLATFORM_HDK] = "HDK",
+	[HW_PLATFORM_IOT] = "IOT",
 	[HW_PLATFORM_ATP] = "ATP",
 	[HW_PLATFORM_IDP] = "IDP",
 	[HW_PLATFORM_CRD] = "CRD",
@@ -637,8 +639,10 @@ static const struct soc_id soc_id[] = {
 	{ qcom_board_id(MONACOP) },
 	{ qcom_board_id(TUNA) },
 	{ qcom_board_id(TUNA7) },
+	{ qcom_board_id(TUNAP) },
 	{ qcom_board_id(KERA) },
 	{ qcom_board_id(KERAP) },
+	{ qcom_board_id(QCS610) },
 };
 
 static struct attribute *msm_custom_socinfo_attrs[MAX_SOCINFO_ATTRS];

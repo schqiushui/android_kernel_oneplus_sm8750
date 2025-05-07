@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2019-2021, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #include <linux/kernel.h>
@@ -10,6 +11,47 @@
 #include "arm-smmu-debug.h"
 #include <linux/firmware/qcom/qcom_scm.h>
 
+u32 arm_smmu_debug_qtb_debugchain_load(void __iomem *debugchain_base)
+{
+	u32 shiftreglen = 0;
+
+	/* Reading the debugchain_load register will start the debugchain sequence */
+	readl_relaxed(debugchain_base + DebugChainQTB_debug_Load);
+	shiftreglen = readl_relaxed(debugchain_base + DebugChainQTB_debug_ShiftRegLen);
+	return (((shiftreglen * 2)/64 + ((shiftreglen * 2)%64 == 0 ? 0 : 1) + 1));
+}
+
+u64 arm_smmu_debug_qtb_debugchain_dump(void __iomem *debugchain_base)
+{
+	u64 dump;
+
+	dump = readl_relaxed(debugchain_base + DebugChainQTB_debug_Dump_Low);
+	dump = (dump | (readl_relaxed(debugchain_base + DebugChainQTB_debug_Dump_High) << 31));
+
+	return dump;
+}
+
+void arm_smmu_debug_dump_debugchain(struct device *dev, void __iomem *debugchain_base)
+{
+	long chain_length = 0, index = 0;
+	u64 val;
+
+	chain_length = arm_smmu_debug_qtb_debugchain_load(debugchain_base);
+	dev_info(dev, "Dumping Debug chain: Length : %ld\n", chain_length);
+	/* First read is to dump away the 0xDEADBEEF value */
+	arm_smmu_debug_qtb_debugchain_dump(debugchain_base);
+	do {
+		val = arm_smmu_debug_qtb_debugchain_dump(debugchain_base);
+		dev_info(dev, "Debug chain: Index :%ld, val : 0x%llx\n", index++, val);
+	} while (chain_length--);
+}
+
+void arm_smmu_debug_dump_qtb_regs(struct device *dev, void __iomem *tbu_base)
+{
+	dev_info(dev, "QSMSTATUS: 0x%x IDLESTATUS: 0x%x\n",
+			readl_relaxed(tbu_base + Qtb500_QtbNsDbgQsmStatus),
+			readl_relaxed(tbu_base + Qtb500_QtbNsDbgIdleStatus));
+}
 
 u32 arm_smmu_debug_tbu_testbus_select(void __iomem *tbu_base,
 				bool write, u32 val)
@@ -262,4 +304,67 @@ void arm_smmu_debug_dump_tcu_testbus(struct device *dev, phys_addr_t phys_addr,
 	dev_info(dev, "Programming Tcu clk gate controller: testbus_sel: 0x%x\n",
 		arm_smmu_debug_tcu_testbus_select(phys_addr, tcu_base,
 						CLK_TESTBUS, READ, 0));
+}
+
+void arm_smmu_debug_set_tnx_tcr_cntl(void __iomem *tbu_base, u64 val)
+{
+	u64 tcr_cntl_val = readq_relaxed(tbu_base + TNX_TCR_CNTL);
+
+	/* Don't override OT_CAPTURE configuration*/
+	if (!(tcr_cntl_val & TNX_TCR_CNTL_TBU_OT_CAPTURE_EN))
+		writeq_relaxed(val, tbu_base + TNX_TCR_CNTL);
+	else
+		pr_err_ratelimited("OT capture enbl, skip TCR CNTL write\n");
+}
+
+u64 arm_smmu_debug_get_tnx_tcr_cntl(void __iomem *tbu_base)
+{
+	return readq_relaxed(tbu_base + TNX_TCR_CNTL);
+}
+
+void arm_smmu_debug_set_mask_and_match(void __iomem *tbu_base, u64 sel,
+					u64 mask, u64 match)
+{
+	writeq_relaxed(mask, tbu_base + ARM_SMMU_CAPTURE1_MASK(sel));
+	writeq_relaxed(match, tbu_base + ARM_SMMU_CAPTURE1_MATCH(sel));
+}
+
+void arm_smmu_debug_get_mask_and_match(void __iomem *tbu_base, u64 *mask,
+					u64 *match)
+{
+	int i;
+
+	for (i = 0; i < NO_OF_MASK_AND_MATCH; ++i) {
+		mask[i] = readq_relaxed(tbu_base +
+				ARM_SMMU_CAPTURE1_MASK(i+1));
+		match[i] = readq_relaxed(tbu_base +
+				ARM_SMMU_CAPTURE1_MATCH(i+1));
+	}
+}
+
+void arm_smmu_debug_get_capture_snapshot(void __iomem *tbu_base,
+		u64 snapshot[NO_OF_CAPTURE_POINTS][REGS_PER_CAPTURE_POINT])
+{
+	int  i, j;
+	u64 valid;
+
+	valid = readl_relaxed(tbu_base + TNX_TCR_CNTL_2);
+
+	for (i = 0; i < NO_OF_CAPTURE_POINTS ; ++i) {
+		if (valid & BIT(i))
+			for (j = 0; j < REGS_PER_CAPTURE_POINT; ++j)
+				snapshot[i][j] = readq_relaxed(tbu_base +
+					ARM_SMMU_CAPTURE_SNAPSHOT(i, j));
+		else
+			for (j = 0; j < REGS_PER_CAPTURE_POINT; ++j)
+				snapshot[i][j] = 0xdededede;
+	}
+}
+
+void arm_smmu_debug_clear_intr_and_validbits(void __iomem *tbu_base)
+{
+	u64 val = 0;
+
+	val |= INTR_CLR | RESET_VALID;
+	writeq_relaxed(val, tbu_base + TNX_TCR_CNTL);
 }

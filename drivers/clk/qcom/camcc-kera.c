@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-only
 /*
- * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2024-2025, Qualcomm Innovation Center, Inc. All rights reserved.
  */
 
 #include <linux/clk.h>
@@ -87,9 +87,8 @@ static struct clk_alpha_pll cam_cc_pll0 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -177,9 +176,8 @@ static struct clk_alpha_pll cam_cc_pll1 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -244,9 +242,8 @@ static struct clk_alpha_pll cam_cc_pll2 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -311,9 +308,8 @@ static struct clk_alpha_pll cam_cc_pll3 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -378,9 +374,8 @@ static struct clk_alpha_pll cam_cc_pll4 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -445,9 +440,8 @@ static struct clk_alpha_pll cam_cc_pll5 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -512,9 +506,8 @@ static struct clk_alpha_pll cam_cc_pll6 = {
 			.vdd_class = &vdd_mx,
 			.num_rate_max = VDD_NUM,
 			.rate_max = (unsigned long[VDD_NUM]) {
-				[VDD_LOWER_D1] = 615000000,
-				[VDD_LOW] = 1100000000,
-				[VDD_LOW_L1] = 1600000000,
+				[VDD_LOWER_D1] = 1100000000,
+				[VDD_LOW] = 1600000000,
 				[VDD_NOMINAL] = 2000000000,
 				[VDD_HIGH_L1] = 2300000000},
 		},
@@ -679,6 +672,7 @@ static const struct clk_parent_data cam_cc_parent_data_8_ao[] = {
 };
 
 static const struct freq_tbl ftbl_cam_cc_camnoc_rt_axi_clk_src[] = {
+	F(19200000, P_BI_TCXO, 1, 0, 0),
 	F(300000000, P_CAM_CC_PLL0_OUT_EVEN, 2, 0, 0),
 	F(400000000, P_CAM_CC_PLL0_OUT_ODD, 1, 0, 0),
 	{ }
@@ -2140,6 +2134,42 @@ static struct clk_branch cam_cc_csiphy5_clk = {
 	},
 };
 
+static struct clk_branch cam_cc_drv_ahb_clk = {
+	.halt_reg = 0x113c4,
+	.halt_check = BRANCH_HALT,
+	.clkr = {
+		.enable_reg = 0x113c4,
+		.enable_mask = BIT(0),
+		.hw.init = &(const struct clk_init_data) {
+			.name = "cam_cc_drv_ahb_clk",
+			.parent_hws = (const struct clk_hw*[]) {
+				&cam_cc_slow_ahb_clk_src.clkr.hw,
+			},
+			.num_parents = 1,
+			.flags = CLK_SET_RATE_PARENT,
+			.ops = &clk_branch2_aon_ops,
+		},
+	},
+};
+
+static struct clk_branch cam_cc_drv_xo_clk = {
+	.halt_reg = 0x113c0,
+	.halt_check = BRANCH_HALT,
+	.clkr = {
+		.enable_reg = 0x113c0,
+		.enable_mask = BIT(0),
+		.hw.init = &(const struct clk_init_data) {
+			.name = "cam_cc_drv_xo_clk",
+			.parent_hws = (const struct clk_hw*[]) {
+				&cam_cc_xo_clk_src.clkr.hw,
+			},
+			.num_parents = 1,
+			.flags = CLK_SET_RATE_PARENT,
+			.ops = &clk_branch2_aon_ops,
+		},
+	},
+};
+
 static struct clk_branch cam_cc_icp_0_ahb_clk = {
 	.halt_reg = 0x11264,
 	.halt_check = BRANCH_HALT,
@@ -2840,6 +2870,8 @@ static struct clk_regmap *cam_cc_kera_clocks[] = {
 	[CAM_CC_CSIPHY3_CLK] = &cam_cc_csiphy3_clk.clkr,
 	[CAM_CC_CSIPHY4_CLK] = &cam_cc_csiphy4_clk.clkr,
 	[CAM_CC_CSIPHY5_CLK] = &cam_cc_csiphy5_clk.clkr,
+	[CAM_CC_DRV_AHB_CLK] = &cam_cc_drv_ahb_clk.clkr,
+	[CAM_CC_DRV_XO_CLK] = &cam_cc_drv_xo_clk.clkr,
 	[CAM_CC_FAST_AHB_CLK_SRC] = &cam_cc_fast_ahb_clk_src.clkr,
 	[CAM_CC_ICP_0_AHB_CLK] = &cam_cc_icp_0_ahb_clk.clkr,
 	[CAM_CC_ICP_0_CLK] = &cam_cc_icp_0_clk.clkr,
@@ -2963,13 +2995,9 @@ static int cam_cc_kera_probe(struct platform_device *pdev)
 
 	/*
 	 * Keep clocks always enabled:
-	 *	cam_cc_drv_ahb_clk
-	 *	cam_cc_drv_xo_clk
 	 *	cam_cc_gdsc_clk
 	 *	cam_cc_sleep_clk
 	 */
-	regmap_update_bits(regmap, 0x113c4, BIT(0), BIT(0));
-	regmap_update_bits(regmap, 0x113c0, BIT(0), BIT(0));
 	regmap_update_bits(regmap, 0x1137c, BIT(0), BIT(0));
 	regmap_update_bits(regmap, 0x11398, BIT(0), BIT(0));
 
