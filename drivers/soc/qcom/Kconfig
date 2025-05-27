@@ -431,6 +431,13 @@ config QCOM_SMP2P
 	  Say yes here to support the Qualcomm Shared Memory Point to Point
 	  protocol.
 
+config OPLUS_FEATURE_SMP2P_STATS
+	  bool "Qualcomm Shared Memory Point to Point statistics"
+	  default y
+	  help
+		  Say yes here to support the Qualcomm Shared Memory Point to Point
+		  statistics.
+
 config QCOM_SMSM
 	tristate "Qualcomm Shared Memory State Machine"
 	depends on QCOM_SMEM
@@ -449,6 +456,14 @@ config QCOM_SMP2P_SLEEPSTATE
 	  are sent through the smp2p framework. This driver can also receive
 	  notifications from the remote to prevent suspend on the local
 	  processor.
+
+config OPLUS_SENSOR_WAKEUP_TRACE
+	tristate "SMP2P Sensor wakeup trace"
+	default m
+	depends on QCOM_SMP2P
+	help
+	  When this option is enabled, the time and type of sensor
+	  wake-up AP will be recorded.
 
 config QSEE_IPC_IRQ_BRIDGE
 	tristate "QSEE IPC Interrupt Bridge"
@@ -584,7 +599,7 @@ config QCOM_WATCHDOG_BARK_TIME
 	depends on QCOM_WDT_CORE
 	int "Qualcomm Technologies, Inc. Watchdog bark time in ms"
 	default 11000
-	range 11000 11000
+	range 11000 22000
 	help
 	  The amount of time, in milliseconds, that should elapse after
 	  a watchdog timer reset before a bark interrupt is sent from the
@@ -959,6 +974,18 @@ config MINIDUMP_MAX_ENTRIES
 	help
 	  This defines maximum number of entries to be allocated for application
 	  subsytem in Minidump table.
+
+config OPLUS_POWERINFO_RPMH
+	bool "powerinfo rpmh config"
+	default n
+	help
+	  Select this config to enable powerinfo rpmh
+
+config OPLUS_POWERINFO_STANDBY_DEBUG
+	bool "powerinfo standby config"
+	default n
+	help
+	  Select this config to enable powerinfo standby debug
 
 config QCOM_HUNG_TASK_ENH
         tristate "QTI Hung Task Enhancement"

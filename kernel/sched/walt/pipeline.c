@@ -238,6 +238,7 @@ static inline bool should_pipeline_pin_special(void)
 }
 
 cpumask_t last_available_big_cpus = CPU_MASK_NONE;
+cpumask_t last_available_prime_cpus = CPU_MASK_NONE;
 int have_heavy_list;
 u32 total_util;
 #define REARRANGE_HYST_MS	100ULL
@@ -424,8 +425,10 @@ void assign_heaviest_topapp(bool found_topapp)
 	 */
 	if (should_pipeline_pin_special()) {
 		pipeline_pinning = true;
+		cpumask_and(&last_available_prime_cpus, cpu_online_mask,
+				&sched_cluster[num_sched_clusters - 1]->cpus);
 		heavy_wts[0]->pipeline_cpu =
-			cpumask_last(&sched_cluster[num_sched_clusters - 1]->cpus);
+			cpumask_last(&last_available_prime_cpus);
 		heavy_wts[0]->low_latency |= WALT_LOW_LATENCY_HEAVY_BIT;
 		if (cpumask_test_cpu(heavy_wts[0]->pipeline_cpu, &last_available_big_cpus))
 			cpumask_clear_cpu(heavy_wts[0]->pipeline_cpu, &last_available_big_cpus);
@@ -500,8 +503,10 @@ static inline void swap_pipeline_with_prime_locked(struct walt_task_struct *prim
 		}
 	} else if (!prime_wts && other_wts) {
 		/* if prime preferred died promote gold to prime, assumes 1 prime */
+		cpumask_and(&last_available_prime_cpus, cpu_online_mask,
+				&sched_cluster[num_sched_clusters - 1]->cpus);
 		other_wts->pipeline_cpu =
-			cpumask_last(&sched_cluster[num_sched_clusters - 1]->cpus);
+			cpumask_last(&last_available_prime_cpus);
 		trace_sched_pipeline_swapped(other_wts, prime_wts);
 	}
 }

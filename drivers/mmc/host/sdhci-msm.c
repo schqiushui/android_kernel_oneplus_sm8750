@@ -4608,7 +4608,6 @@ static void sdhci_msm_qos_init(struct sdhci_msm_host *msm_host)
 					err);
 			continue;
 		}
-
 		qcg->mask.bits[0] = mask & cpu_possible_mask->bits[0];
 		if (!qcg->mask.bits[0]) {
 			dev_err(&pdev->dev, "Invalid group mask, use default\n");
