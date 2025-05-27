@@ -768,6 +768,7 @@ static void waltgov_update_freq(struct waltgov_callback *cb, u64 time,
 	unsigned int next_f;
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_FRAME_BOOST)
 	unsigned long irq_flags;
+	unsigned long util;
 #endif
 
 	if (flags & WALT_CPUFREQ_SMART_FREQ_BIT) {
@@ -780,6 +781,7 @@ static void waltgov_update_freq(struct waltgov_callback *cb, u64 time,
 
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_FRAME_BOOST)
 	raw_spin_lock_irqsave(&wg_policy->update_lock, irq_flags);
+	util = cpu_util_freq_walt(wg_cpu->cpu, &wg_cpu->walt_load, &wg_cpu->reasons);
 	wg_cpu->util = walt_cl_util(wg_cpu->cpu, util, wg_cpu->walt_load.ed_active);
 	wg_cpu->flags = flags;
 	wg_policy->flags = flags;
