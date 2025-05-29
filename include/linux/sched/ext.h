@@ -508,8 +508,13 @@ struct scx_dispatch_q {
 	struct rb_root_cached	priq;	/* processed in p->scx.dsq_vtime order */
 	u32			nr;
 	u64			id;
+	u32			idx;
+	int			cpu;
+	struct rhash_head	hash_node;
 	struct llist_node	free_node;
 	struct rcu_head		rcu;
+	u64                     last_consume_at;
+	bool                    is_timeout;
 };
 
 /* scx_entity.flags */
