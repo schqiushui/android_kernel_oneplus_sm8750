@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/* Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved. */
+/* Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved. */
 
 #include <linux/of.h>
 #include <linux/list.h>
@@ -236,3 +236,4 @@ module_exit(glink_probe_exit);
 
 MODULE_DESCRIPTION("Qualcomm Technologies, Inc. GLINK probe helper driver");
 MODULE_LICENSE("GPL");
+

@@ -101,6 +101,10 @@ struct bcl_device {
 	struct bcl_lvl_stats		stats[MAX_BCL_LVL_COUNT];
 	const struct bcl_desc		*desc;
 	struct notifier_block		nb;
+#ifdef OPLUS_FEATURE_CHG_BASIC
+	bool				support_track;
+	int				id;
+#endif
 };
 
 void bcl_stats_init(char *bcl_name, struct bcl_device *bcl_perph,
