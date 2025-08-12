@@ -31,7 +31,7 @@ obj-$(CONFIG_QCOM_SMD_RPM)	+= rpm-proc.o smd-rpm.o
 obj-$(CONFIG_QCOM_SMEM) +=	smem.o
 obj-$(CONFIG_QCOM_SMEM_STATE) += smem_state.o
 ifneq ($(CONFIG_OPLUS_SENSOR_WAKEUP_TRACE), n)
-CFLAGS_oplus_smp2p.o += -DOPLUS_FEATURE_SENSOR_WAKEUP_TRACE
+CFLAGS_smp2p.o += -DOPLUS_FEATURE_SENSOR_WAKEUP_TRACE
 endif
 obj-$(CONFIG_QCOM_SMP2P)	+= oplus_smp2p.o
 oplus_smp2p-y   += smp2p.o

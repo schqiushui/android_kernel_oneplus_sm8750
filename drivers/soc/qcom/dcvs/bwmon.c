@@ -997,13 +997,14 @@ static int update_bw_hwmon(struct bw_hwmon *hw)
 	mutex_lock(&node->update_lock);
 
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_GEAS)
-	if (node_ext->bwmon_irq_handler != NULL) {
-		ret = node_ext->bwmon_irq_handler(node);
+	if (node_ext->bwmon_irq_handler != NULL && node_ext->bwmon_irq_handler(node)) {
+	        mutex_unlock(&node->update_lock);
+	        bwmon_monitor_start(hw);
+	        mutex_unlock(&node->mon_lock);
+
+		return 0;
 	}
-	mutex_unlock(&node->update_lock);
-	bwmon_monitor_start(hw);
-	mutex_unlock(&node->mon_lock);
-#else
+#endif
 	if (bwmon_update_cur_freq(node))
 		ret = qcom_dcvs_update_votes(dev_name(hw->dev),
 					node->cur_freqs,
@@ -1015,7 +1016,6 @@ static int update_bw_hwmon(struct bw_hwmon *hw)
 
 	bwmon_monitor_start(hw);
 	mutex_unlock(&node->mon_lock);
-#endif
 
 	return 0;
 }
