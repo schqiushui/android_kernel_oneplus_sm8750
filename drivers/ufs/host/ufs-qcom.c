@@ -6488,7 +6488,8 @@ static int ufs_qcom_remove(struct platform_device *pdev)
 		ufsf_remove(ufs_qcom_get_ufsf(hba));
 #endif
 	ufshcd_remove(hba);
-	platform_msi_domain_free_irqs(hba->dev);
+	if (host->esi_enabled)
+		platform_msi_domain_free_irqs(hba->dev);
 	return 0;
 }
 
