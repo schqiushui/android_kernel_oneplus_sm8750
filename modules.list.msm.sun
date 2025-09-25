@@ -36,6 +36,7 @@ pinctrl-kera.ko
 qcom_tsens.ko
 qcom_dma_heaps.ko
 qcom_iommu_util.ko
+qpnp-power-on.ko
 qcom-reboot-reason.ko
 qcom-scm.ko
 clk-dummy.ko
