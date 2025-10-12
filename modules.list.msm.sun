@@ -151,3 +151,5 @@ oplus_bsp_task_sched.ko
 oplus_bsp_task_overload.ko
 oplus_bsp_close_loop.ko
 qcom-cpufreq-hw.ko
+nvmem_qfprom.ko
+qfprom-sys.ko
